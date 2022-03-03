@@ -14,8 +14,10 @@
 
 <script lang="ts" setup>
 import { login } from '@/api/index.ts'
+import { createRouter } from '../router/path'
+import { useRouter } from "vue-router"
 import { reactive } from 'vue'
-
+const router = useRouter()
 const formInline = reactive({
   name: '',
   psd: '',
@@ -24,8 +26,10 @@ const formInline = reactive({
 const onSubmit = async () => {
   if (formInline.name && formInline.psd) {
     const res = await login(formInline)
-    
-    console.log(formInline, res, 'submit!')
+    // 动态创建路由
+    createRouter(res.pathArr)
+    router.push('home')
+    localStorage.setItem('userInfo', JSON.stringify(res))
   }
 }
 </script>
